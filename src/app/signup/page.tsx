@@ -1,6 +1,7 @@
 "use client";
 
-import { signUpUser } from "@/firebase/firebaseauth";
+import { auth, signUpUser } from "@/firebase/firebaseauth";
+import { sendEmailVerification } from "firebase/auth";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -9,9 +10,11 @@ function Signup() {
     const [password, setPassword] = useState("");
 
 
-    function handleSubmit(email: string, password: string) {
+    async function handleSubmit(email: string, password: string) {
         signUpUser(email, password)
-        console.log(email,password);
+        if (!auth.currentUser?.emailVerified){
+           await sendEmailVerification(auth.currentUser)
+        }
         
     }
 

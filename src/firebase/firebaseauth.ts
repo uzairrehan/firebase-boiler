@@ -1,7 +1,7 @@
 import { getAuth, signInWithEmailAndPassword,  createUserWithEmailAndPassword  } from "firebase/auth";
 import { app } from "./firebaseconfig";
 
-const auth = getAuth(app);
+export const auth = getAuth(app);
 
 export function signInUser(email:string,password:string ) {
     signInWithEmailAndPassword(auth, email, password)

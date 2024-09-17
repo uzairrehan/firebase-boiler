@@ -11,8 +11,8 @@ function Signin() {
 
     function handleSubmit(email: string, password: string) {
         signInUser(email, password)
-        console.log(email,password);
         
+        console.log(email,password);
     }
 
 
