@@ -1,10 +1,14 @@
-import { getAuth, signInWithEmailAndPassword,  createUserWithEmailAndPassword ,signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword,  createUserWithEmailAndPassword ,signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
 import { app } from "./firebaseconfig";
 
 
 
 export const auth = getAuth(app);
 export const provider = new GoogleAuthProvider();
+
+
+
+
 
 
 export function signInUser(email:string,password:string ) {
@@ -19,6 +23,13 @@ export function signInUser(email:string,password:string ) {
     console.log(errorCode, errorMessage);
   });
 }
+
+
+
+
+
+
+
 
 
 export function signUpUser(email:string,password:string ) {
@@ -37,6 +48,16 @@ export function signUpUser(email:string,password:string ) {
 
 
 
+
+
+
+
+
+
+
+
+
+
 export function signinwithgoogle() {
 signInWithPopup(auth, provider)
 .then((result) => {
@@ -46,7 +67,7 @@ signInWithPopup(auth, provider)
   // The signed-in user info.
   const user = result.user;
   // IdP data available using getAdditionalUserInfo(result)
-  console.log(token, user);
+  console.log("user created with google", token, user);
   
   // ...
 }).catch((error) => {
@@ -61,4 +82,29 @@ signInWithPopup(auth, provider)
   
   // ...
 });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export function logout() {
+  signOut(auth).then(() => {
+   console.log("Sign-out successful")
+  }).catch((error) => {
+    console.log(error)
+  });
 }
