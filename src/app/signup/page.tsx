@@ -3,19 +3,24 @@
 import { auth, signUpUser } from "@/firebase/firebaseauth";
 import { sendEmailVerification } from "firebase/auth";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+
 
 function Signup() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
+    const route =  useRouter()
 
     async function handleSubmit(email: string, password: string) {
-        signUpUser(email, password)
-        if (!auth.currentUser?.emailVerified){
+        await  signUpUser(email, password)
+        if (auth.currentUser?.emailVerified === false){
+           await route.push("/verify")
            await sendEmailVerification(auth.currentUser)
         }
-        
+        else {
+           await route.push("/")
+        }  
     }
 
 
@@ -55,7 +60,7 @@ function Signup() {
                                 </div>
                                 <a href="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</a>
                             </div>
-                            <button onClick={() => {handleSubmit(email, password)}} className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
+                            <button onClick={() => {handleSubmit(email, password)}} className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign up</button>
                             <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                                 Want to <Link href={"signin"}><b className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign in ?</b></Link>
                             </p>

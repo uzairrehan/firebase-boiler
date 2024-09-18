@@ -1,19 +1,32 @@
 "use client";
 
-import { signInUser } from "@/firebase/firebaseauth";
+import { auth, signInUser } from "@/firebase/firebaseauth";
+import { sendEmailVerification } from "firebase/auth";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+
+
 
 function Signin() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
 
-    function handleSubmit(email: string, password: string) {
-        signInUser(email, password)
-        
-        console.log(email,password);
+
+    const route = useRouter()
+    async function handleSubmit(email: string, password: string) {
+        await  signInUser(email, password)
+        if (auth.currentUser?.emailVerified === false){
+           await route.push("/verify")
+           await sendEmailVerification(auth.currentUser)
+        }
+        else {
+           await route.push("/")
+        }  
     }
+
+
 
 
     return (<>

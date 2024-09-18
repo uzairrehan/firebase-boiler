@@ -1,40 +1,21 @@
-import { createContext, useContext } from "react"; 
+// import { createContext, ReactNode, useContext } from "react"; 
+// import { getAuth, onAuthStateChanged } from "firebase/auth";
 
- createContext(null)
-
-
-
+//   const Authcontext = createContext(null)
 
 
-
-
-
-
-
-
-
-
-
+//    function AuthContextProvider({children}:{children :ReactNode}) {
+//     return ( 
+//       <Authcontext.Provider value={}>
+//         {children}
+//       </Authcontext.Provider>
+//     );
+//    }
+   
+//    export default AuthContextProvider;
 
 
 
 
 
-
-
-
- 
- import { getAuth, onAuthStateChanged } from "firebase/auth";
-
-const auth = getAuth();
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    // User is signed in, see docs for a list of available properties
-    // https://firebase.google.com/docs/reference/js/auth.user
-    const uid = user.uid;
-    // ...
-  } else {
-    // User is signed out
-    // ...
-  }
-});
+// export const useAuthContext = () => useContext(Authcontext)
