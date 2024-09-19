@@ -7,5 +7,6 @@ export type userSaveType = {
 export type todoDataType = {
     todo :string, 
     uid : string,
-    email :string
+    email :string,
+    completed :boolean
 }

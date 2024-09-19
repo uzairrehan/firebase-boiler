@@ -25,10 +25,10 @@ export async function saveUserInfo({email,phoneNumber, uid}:userSaveType) {
 
 
 
-export async function saveTodo({todo,uid,email}:todoDataType) {
+export async function saveTodo({todo,uid,email,completed}:todoDataType) {
     try {
        const where = collection(db,"todo")
-       const what = {todo, uid,email}
+       const what = {todo, uid,email,completed}
        await addDoc(where,what)
     } catch (error) {
         console.log("cant save : ", error );
