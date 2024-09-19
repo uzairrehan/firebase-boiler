@@ -1,5 +1,7 @@
 import { getAuth, signInWithEmailAndPassword,  createUserWithEmailAndPassword ,signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
 import { app } from "./firebaseconfig";
+import { saveUserInfo } from "./firebasefirestore";
+import { userSave } from "@/types/types";
 
 
 
@@ -15,6 +17,19 @@ export function signInUser(email:string,password:string ) {
     signInWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
     const user = userCredential.user;
+    const {
+      email,
+      phoneNumber,
+      uid
+    } = user;
+
+
+    const userToBeSaved:userSave = {
+      email,
+      phoneNumber, 
+      uid
+    }
+    saveUserInfo(userToBeSaved)
     console.log(user);
   })
   .catch((error) => {
@@ -36,6 +51,18 @@ export function signUpUser(email:string,password:string ) {
     createUserWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
     const user = userCredential.user;
+    const {
+      email,
+      phoneNumber,
+      uid
+    } = user;
+
+    const userToBeSaved:userSave = {
+      email,
+      phoneNumber, 
+      uid
+    }
+    saveUserInfo(userToBeSaved)
     console.log(user);
   })
   .catch((error) => {
@@ -67,6 +94,19 @@ signInWithPopup(auth, provider)
   // The signed-in user info.
   const user = result.user;
   // IdP data available using getAdditionalUserInfo(result)
+  const {
+    email,
+    phoneNumber,
+    uid
+  } = user;
+
+
+  const userToBeSaved:userSave = {
+    email,
+    phoneNumber, 
+    uid
+  }
+  saveUserInfo(userToBeSaved)
   console.log("user created with google", token, user);
   
   // ...

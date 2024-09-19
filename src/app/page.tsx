@@ -1,6 +1,7 @@
 "use client";
 
 import { signinwithgoogle } from "@/firebase/firebaseauth";
+// import { saveUserInfo } from "@/firebase/firebasefirestore";
 import Link from "next/link";
 
 
@@ -19,6 +20,7 @@ export default function Home() {
       <br />
       <button onClick={signinwithgoogle} > signin with google</button>
       <br />
+      {/* <button onClick={saveUserInfo}>save user</button> */}
     </>
   );
 }

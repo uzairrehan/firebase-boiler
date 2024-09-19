@@ -3,6 +3,7 @@ import { createContext, ReactNode, useContext, useEffect, useState } from "react
 import { onAuthStateChanged, sendEmailVerification } from "firebase/auth";
 import { auth } from "@/firebase/firebaseauth";
 import { useRouter } from "next/navigation";
+import { saveUserInfo } from "@/firebase/firebasefirestore";
 
 const Authcontext = createContext(null)
 
@@ -20,7 +21,7 @@ function AuthContextProvider({ children }: { children: ReactNode }) {
                 if (user.emailVerified === false) {
                     route.push("/verify")
                     if (!emailVerificationSent) {
-                        sendEmailVerification(user);
+                        sendEmailVerification(user)
                         setEmailVerificationSent(true)
                     }
                 }
@@ -31,7 +32,7 @@ function AuthContextProvider({ children }: { children: ReactNode }) {
             else {
                 route.push("/")
                 setAuthenticatedUser({})
-                setEmailVerificationSent(false ) 
+                setEmailVerificationSent(false) 
             }
         })
     }, [])
