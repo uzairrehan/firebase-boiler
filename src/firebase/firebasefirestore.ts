@@ -1,7 +1,7 @@
-import { getFirestore , doc, setDoc } from "firebase/firestore";
+import { getFirestore , doc, setDoc, collection, addDoc } from "firebase/firestore";
 
 import { app } from "./firebaseconfig";
-import { userSave } from "@/types/types";
+import {  todoDataType, userSaveType } from "@/types/types";
 
 //  this called instance
 const db = getFirestore(app);
@@ -9,7 +9,7 @@ const db = getFirestore(app);
 
 
 
-export async function saveUserInfo({email,phoneNumber, uid}:userSave) {
+export async function saveUserInfo({email,phoneNumber, uid}:userSaveType) {
     try {
         const where = doc(db,"user", uid)
         const what = {email,phoneNumber,uid}
@@ -23,6 +23,17 @@ export async function saveUserInfo({email,phoneNumber, uid}:userSave) {
 
 
 
+
+
+export async function saveTodo({todo,uid,email}:todoDataType) {
+    try {
+       const where = collection(db,"todo")
+       const what = {todo, uid,email}
+       await addDoc(where,what)
+    } catch (error) {
+        console.log("cant save : ", error );
+    }
+}
 
 
 

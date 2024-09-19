@@ -1,4 +1,5 @@
 "use client";
+import Todo from "@/components/todo";
 import { useAuthContext } from "@/context/authcontext";
 import { logout } from "@/firebase/firebaseauth";
 
@@ -11,6 +12,8 @@ function Profile() {
         and email is : {authenticatedUser.email}
         <br />
         <button onClick={logout}>logout</button>
+        <br />
+        <Todo/>
     </>);
 }
 
