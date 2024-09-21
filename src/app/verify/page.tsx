@@ -3,12 +3,12 @@
 import { useAuthContext } from "@/context/authcontext";
 import { sendEmailVerification } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-
 
 
 function Verify() {
     const { authenticatedUser } = useAuthContext()
+
+
     const route = useRouter()
 
     setInterval(() => {

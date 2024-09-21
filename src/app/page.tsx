@@ -1,26 +1,19 @@
 "use client";
-
 import { signinwithgoogle } from "@/firebase/firebaseauth";
-
-import Link from "next/link";
-
-
-
 
 
 export default function Home() {
-
   return (
     <>
       <h1 className="p-5">Login or Signup to continue</h1>
       <br />
-      <Link href={"/signin"}>signin</Link>
+      <a href={"/signin"}>signin</a>
       <br />
-      <Link href={"/signup"}>signup</Link>
+      <a href={"/signup"}>signup</a>
       <br />
       <button onClick={signinwithgoogle} > signin with google</button>
       <br />
-  
+
     </>
   );
 }

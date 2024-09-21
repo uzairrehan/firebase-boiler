@@ -1,20 +1,15 @@
 import { useAuthContext } from "@/context/authcontext";
-import { fetchKnownTodo, getTodoList, saveTodo } from "@/firebase/firebasefirestore";
+import { fetchKnownTodo, saveTodo } from "@/firebase/firebasefirestore";
 import { useState } from "react";
 
 function Todo() {
     const [todo, setTodo] = useState("");
-    const [searchTodo, setSearchTodo] = useState("");
+    // const [searchTodo, setSearchTodo] = useState("");
     const [searchByUID, setSearchByUID] = useState("");
-    const [completed, setCompleted] = useState(false);
-    const authcontext = useAuthContext();
-
-    if (!authcontext) {
-        return "nothingg"
-    }
-
-    const { authenticatedUser } = authcontext
+    const [completed, setCompleted] = useState(false)
+    const { authenticatedUser } = useAuthContext();
     const { email, uid } = authenticatedUser
+
     return (<>
         <br />
         <br />
@@ -39,13 +34,12 @@ function Todo() {
                 fetchKnownTodo(searchByUID)
             }}>get todo by uid</button>
         <br />
-        <br />  
+        {/* <br />  
             <input type="text" value={searchTodo} onChange={(e) => setSearchTodo(e.target.value)} />
-        <br />
-            <button onClick={()=>{
-                getTodoList(searchTodo)
-            }}>get list by email</button>
-
+        // <br /> */}
+        {/* //     <button onClick={()=>{
+        //         getTodoList(email)
+        //     }}>get list by email</button> */}
     </>);
 }
 
