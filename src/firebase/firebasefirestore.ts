@@ -5,6 +5,9 @@ import {
   collection,
   addDoc,
   getDoc,
+  query,
+  getDocs,
+  where,
   // getDocs,
   // query,
   // where,
@@ -12,6 +15,7 @@ import {
 
 import { app } from "./firebaseconfig";
 import { todoDataType, userSaveType } from "@/types/types";
+import { auth } from "./firebaseauth";
 
 //  this called instance
 const db = getFirestore(app);
@@ -42,27 +46,54 @@ export async function fetchKnownTodo(UID: string) {
   const reference = doc(db, "todo", UID);
   const data = await getDoc(reference);
   if (data.exists()) {
-    console.log("here is the todo of ", data.id , data.data());
+    console.log("here is the todo of ", data.id, data.data());
   } else {
-    console.log("nothing to show")};
+    console.log("nothing to show");
+  }
+}
+
+export async function getTodoList(email: string) {
+  if (email) {
+    const reference = collection(db, "todo");
+    const wher = where("email", "==", email);
+    const q = query(reference, wher);
+    const todoList = await getDocs(q);
+    todoList.forEach((data) => {
+      if (data.exists()) {
+        console.log(data.data());
+      } else {
+        console.log("can't find");
+      }
+    });
+  }
 }
 
 
 
 
-// export async function getTodoList(email: string) {
-//   const reference = await collection(db, "todo");
-//   const wher = await where("email", "==", email);
-//   const q =  query(reference, wher);
-//   const todoList = await getDocs(q);
-//   todoList.forEach((data) => {
-//     if (data.exists()) {
-//       console.log(data.data());
-//     } else {
-//       console.log("can't find");
-//     }
-//   });
-// }
+export async function realTimeUpdate() {
+    const reference =  collection(db, "todo")
+    const userUID = auth.currentUser?.uid
+    const condition = where("uid" , "==" , userUID)
+    const q =  query(reference, condition)
+    const allTodosSnapshot = await getDocs (q)
+    const allTodos = allTodosSnapshot.docs.map((rawdata)=>{
+      const data = rawdata.data()
+      data.id = rawdata.id
+      return data
+    })
+    return allTodos
+}
+
+
+
+
+
+
+
+
+
+
 
 // collection(instance, "collectionName")
 // addDoc("where", "what");

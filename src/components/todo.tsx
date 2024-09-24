@@ -1,14 +1,25 @@
 import { useAuthContext } from "@/context/authcontext";
-import { fetchKnownTodo, saveTodo } from "@/firebase/firebasefirestore";
-import { useState } from "react";
+import { fetchKnownTodo, getTodoList, realTimeUpdate, saveTodo } from "@/firebase/firebasefirestore";
+import { useEffect, useState } from "react";
 
 function Todo() {
     const [todo, setTodo] = useState("");
-    // const [searchTodo, setSearchTodo] = useState("");
+    const [searchTodo, setSearchTodo] = useState("");
     const [searchByUID, setSearchByUID] = useState("");
     const [completed, setCompleted] = useState(false)
     const { authenticatedUser } = useAuthContext();
     const { email, uid } = authenticatedUser
+    const [todoData , setTodoData] = useState()
+
+
+    useEffect(() => {
+       getRealTimeUpdate()
+    },[])
+    async function getRealTimeUpdate( ){
+        const data= await realTimeUpdate()
+        console.log("hello" ,data)
+        setTodoData(data)
+    } 
 
     return (<>
         <br />
@@ -28,18 +39,23 @@ function Todo() {
         }>save it</button>
         <br />
         <br />
-            <input type="text" value={searchByUID} onChange={(e) => setSearchByUID(e.target.value)} />
+        <input type="text" value={searchByUID} onChange={(e) => setSearchByUID(e.target.value)} />
         <br />
-            <button onClick={()=>{
-                fetchKnownTodo(searchByUID)
-            }}>get todo by uid</button>
+        <button onClick={() => {
+            fetchKnownTodo(searchByUID)
+        }}>get todo by uid</button>
         <br />
-        {/* <br />  
-            <input type="text" value={searchTodo} onChange={(e) => setSearchTodo(e.target.value)} />
-        // <br /> */}
-        {/* //     <button onClick={()=>{
-        //         getTodoList(email)
-        //     }}>get list by email</button> */}
+        <br />
+        { }
+
+        <input type="text" value={searchTodo} onChange={(e) => setSearchTodo(e.target.value)} />
+        <br />
+        <button onClick={() => {
+            getTodoList(email)
+        }}>get list by email</button>
+        {
+        todoData
+        }
     </>);
 }
 
