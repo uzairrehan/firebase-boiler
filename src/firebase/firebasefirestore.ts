@@ -8,9 +8,6 @@ import {
   query,
   getDocs,
   where,
-  // getDocs,
-  // query,
-  // where,
 } from "firebase/firestore";
 
 import { app } from "./firebaseconfig";
@@ -72,17 +69,20 @@ export async function getTodoList(email: string) {
 
 
 export async function realTimeUpdate() {
-    const reference =  collection(db, "todo")
-    const userUID = auth.currentUser?.uid
-    const condition = where("uid" , "==" , userUID)
-    const q =  query(reference, condition)
-    const allTodosSnapshot = await getDocs (q)
-    const allTodos = allTodosSnapshot.docs.map((rawdata)=>{
-      const data = rawdata.data()
-      data.id = rawdata.id
-      return data
-    })
-    return allTodos
+    if (auth.currentUser) {
+      const reference =  collection(db, "todo")
+      const userUID = auth.currentUser?.uid
+      const condition = where("uid" , "==" , userUID)
+      const q =  query(reference, condition)
+      const allTodosSnapshot = await getDocs (q)
+      const allTodos = allTodosSnapshot.docs.map((rawdata)=>{
+        const data = rawdata.data()
+        data.id = rawdata.id
+        return data
+      })  
+      return allTodos
+    }
+    
 }
 
 

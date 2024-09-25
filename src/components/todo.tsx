@@ -1,5 +1,6 @@
 import { useAuthContext } from "@/context/authcontext";
 import { fetchKnownTodo, getTodoList, realTimeUpdate, saveTodo } from "@/firebase/firebasefirestore";
+import { DocumentData } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 function Todo() {
@@ -11,12 +12,14 @@ function Todo() {
     const { email, uid } = authenticatedUser
     const [todoData , setTodoData] = useState()
 
-
+ 
     useEffect(() => {
        getRealTimeUpdate()
     },[])
+
+    
     async function getRealTimeUpdate( ){
-        const data= await realTimeUpdate()
+        const data:DocumentData[] = await realTimeUpdate()
         console.log("hello" ,data)
         setTodoData(data)
     } 
