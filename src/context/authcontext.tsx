@@ -1,16 +1,16 @@
 "use client";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { onAuthStateChanged, sendEmailVerification } from "firebase/auth";
+import { onAuthStateChanged, sendEmailVerification} from "firebase/auth";
 import { auth } from "@/firebase/firebaseauth";
 import { useRouter } from "next/navigation";
-import { authContextType } from "@/types/types";
+import { authContextType, userSaveType } from "@/types/types";
 
 const Authcontext = createContext<null | authContextType>(null)
 
 
 
 function AuthContextProvider({ children }: { children: ReactNode }) {
-    const [authenticatedUser, setAuthenticatedUser] = useState({});
+    const [authenticatedUser, setAuthenticatedUser] = useState<userSaveType>();
     const [emailVerificationSent, setEmailVerificationSent] = useState(false);
     const route = useRouter()
     
