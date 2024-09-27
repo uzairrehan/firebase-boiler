@@ -18,9 +18,7 @@ export type inputElementType = {
 };
 
 export type authContextType = {
-  authenticatedUser: {
-    email: string;
-    uid: string;
-  };
+  authenticatedUser : {
+    email: string;uid: string;};
   setAuthenticatedUser: Dispatch<SetStateAction<object>>;
 };

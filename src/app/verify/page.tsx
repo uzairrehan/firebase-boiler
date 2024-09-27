@@ -1,22 +1,13 @@
 "use client";
-
 import { useAuthContext } from "@/context/authcontext";
 import { sendEmailVerification } from "firebase/auth";
 import { useRouter } from "next/navigation";
-
-
 function Verify() {
     const { authenticatedUser } = useAuthContext()
-
-
     const route = useRouter()
-
     setInterval(() => {
         authenticatedUser.emailVerified ? route.push("/profile") : null
     }, 2000);
-
-
-
     return (<>
         Verify your account. check email of ... {authenticatedUser.email}
         <br />
@@ -25,5 +16,4 @@ function Verify() {
         }} >Resend</button>
     </>);
 }
-
 export default Verify;

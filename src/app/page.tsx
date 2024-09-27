@@ -11,7 +11,7 @@ export default function Home() {
       <br />
       <a href={"/signup"}>signup</a>
       <br />
-      <button onClick={signinwithgoogle} > signin with google</button>
+      <button onClick={signinwithgoogle}>signin with google</button>
       <br />
 
     </>

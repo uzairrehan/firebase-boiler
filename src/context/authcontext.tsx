@@ -1,52 +1,71 @@
 "use client";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { onAuthStateChanged, sendEmailVerification} from "firebase/auth";
+import { onAuthStateChanged, sendEmailVerification } from "firebase/auth";
 import { auth } from "@/firebase/firebaseauth";
 import { useRouter } from "next/navigation";
-import { authContextType, userSaveType } from "@/types/types";
+import { authContextType } from "@/types/types";
 
-const Authcontext = createContext<null | authContextType>(null)
+// Define the AuthContext with null as a valid type
+const AuthContext = createContext<authContextType | null>(null);
 
+// Type definition for authenticated user
+type authUserType = {
+    email: string | null;
+    uid: string;
+};
 
-
+// AuthContextProvider component
 function AuthContextProvider({ children }: { children: ReactNode }) {
-    const [authenticatedUser, setAuthenticatedUser] = useState<userSaveType>();
+    const [authenticatedUser, setAuthenticatedUser] = useState<authUserType | null>(null);
     const [emailVerificationSent, setEmailVerificationSent] = useState(false);
-    const route = useRouter()
-    
+    const router = useRouter();
+
     useEffect(() => {
-        onAuthStateChanged(auth, (user) => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
-                setAuthenticatedUser(user)
-                if (user.emailVerified === false) {
-                    route.push("/verify")
+                // Create the authenticated user object
+                const authUser: authUserType = {
+                    email: user.email,
+                    uid: user.uid,
+                };
+                setAuthenticatedUser(authUser);
+
+                if (!user.emailVerified) {
+                    router.push("/verify");
                     if (!emailVerificationSent) {
                         sendEmailVerification(user)
-                        setEmailVerificationSent(true)
+                            .then(() => setEmailVerificationSent(true))
+                            .catch((error) => console.error("Error sending verification email", error));
                     }
+                } else {
+                    router.push("/profile");
                 }
-                else {
-                    route.push("/profile")
-                }
+            } else {
+                // If no user is logged in, set authenticatedUser to null
+                setAuthenticatedUser(null);
+                router.push("/");
+                setEmailVerificationSent(false);
             }
-            else {
-                route.push("/")
-                setAuthenticatedUser({})
-                setEmailVerificationSent(false) 
-            }
-        })
-    })
+        });
+
+        // Cleanup the subscription on unmount
+        return () => unsubscribe();
+    }, [emailVerificationSent, router]);
+
     return (
-        <Authcontext.Provider value={{ authenticatedUser, setAuthenticatedUser }}>
+        <AuthContext.Provider value={{ authenticatedUser, setAuthenticatedUser }}>
             {children}
-        </Authcontext.Provider>
+        </AuthContext.Provider>
     );
 }
 
+// Hook to use AuthContext
+export const useAuthContext = () => {
+    const context = useContext(AuthContext);
+    if (!context) {
+        throw new Error("useAuthContext must be used within an AuthContextProvider");
+    }
+    return context;
+};
+
 export default AuthContextProvider;
-
-
-
-
-
-export const useAuthContext = () => useContext(Authcontext)
